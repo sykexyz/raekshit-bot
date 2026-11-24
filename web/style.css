@@ -592,4 +592,55 @@ button {
   font-family: 'JetBrains Mono', monospace;
   position: relative;
 }
-.logs::before
+.logs::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.log {
+  display: block;
+  padding: 2px 0;
+  word-break: break-word;
+  border-left: 2px solid transparent;
+  padding-left: 8px;
+  transition: background 0.15s;
+}
+.log:hover { background: rgba(0,224,255,0.03); }
+
+.log-ts { color: var(--dim-2); margin-right: 8px; }
+.log-rid { color: var(--accent); margin-right: 8px; font-weight: 700; }
+.log-msg { color: var(--dim); }
+
+.log.info    { border-left-color: var(--border-2); }
+.log.info    .log-msg { color: #8a94a8; }
+.log.warn    { border-left-color: var(--warn); }
+.log.warn    .log-msg { color: var(--warn); }
+.log.error   { border-left-color: var(--bad); }
+.log.error   .log-msg { color: var(--bad); }
+.log.success { border-left-color: var(--ok); }
+.log.success .log-msg { color: var(--ok); }
+
+.pulse {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 10px var(--ok);
+  animation: pulse 1.5s infinite;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr; padding: 16px; }
+  header { padding: 14px 16px; flex-wrap: wrap; gap: 10px; }
+  .hdr-right { flex-wrap: wrap; }
+  .glitch { font-size: 32px; }
+  .login-box { padding: 32px 24px; }
+}
