@@ -1,4 +1,4 @@
-document.addEventListener('const $ = (s) => document.querySelector(s);
+const $ = (s) => document.querySelector(s);
 const $$ = (s) => document.querySelectorAll(s);
 let API_KEY = localStorage.getItem('rx_key') || '';
 let socket = null;
