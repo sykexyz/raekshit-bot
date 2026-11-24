@@ -1,21 +1,32 @@
 const express = require('express');
+const http = require('http');
 const path = require('path');
-const config = require('../config');
-const logger = require('../utils/logger');
-const apiRoutes = require('./api');
+const { Server } = require('socket.io');
+const cfg = require('../config');
+const log = require('../utils/logger');
+const api = require('./api');
 
-function startServer() {
+function createWebServer() {
   const app = express();
+  app.use(express.json({ limit: '1mb' }));
 
-  app.use(express.json());
-  app.use(express.static(path.join(__dirname, '../../web')));
-  app.use('/api', apiRoutes);
+  app.use('/api', api);
+  app.use('/', express.static(path.join(__dirname, '..', '..', 'web')));
 
-  app.listen(config.port, () => {
-    logger.info(`Web server running on http://localhost:${config.port}`);
+  const server = http.createServer(app);
+  const io = new Server(server, { cors: { origin: '*' } });
+
+  io.on('connection', (socket) => {
+    socket.emit('hello', { ts: Date.now() });
   });
 
-  return app;
+  log.setIo(io);
+
+  server.listen(cfg.webPort, () => {
+    log.info(`web dashboard → http://localhost:${cfg.webPort}`);
+  });
+
+  return { server, io };
 }
 
-module.exports = { startServer };
+module.exports = { createWebServer };
