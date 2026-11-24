@@ -1,19 +1,21 @@
-require('dotenv').config();
-const config = require('./config');
-const logger = require('./utils/logger');
-const { initBot } = require('./bot/client');
-const { startServer } = require('./web/server');
+const log = require('./utils/logger');
+const { createWebServer } = require('./web/server');
+const { createCommander } = require('./bot/client');
 
-async function main() {
-  logger.info('Starting raekshxt-bot...');
-  try {
-    startServer();
-    await initBot();
-    logger.info('raekshxt-bot is fully operational.');
-  } catch (error) {
-    logger.error('Failed to start application:', error);
-    process.exit(1);
-  }
-}
+process.on('unhandledRejection', (e) => log.error(`unhandled: ${e?.message || e}`));
+process.on('uncaughtException', (e) => log.error(`uncaught: ${e?.message || e}`));
 
-main();
+log.info('raekshxt-bot booting…');
+
+const { server } = createWebServer();
+const bot = createCommander();
+
+const shutdown = () => {
+  log.warn('shutting down…');
+  try { bot?.destroy(); } catch {}
+  try { server?.close(); } catch {}
+  setTimeout(() => process.exit(0), 300);
+};
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
