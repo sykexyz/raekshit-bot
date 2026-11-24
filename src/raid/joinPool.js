@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, Events } = require('discord.js');
 
 async function joinWithToken(token, inviteCode) {
   return new Promise((resolve) => {
@@ -18,7 +18,7 @@ async function joinWithToken(token, inviteCode) {
 
     const timeout = setTimeout(() => finish(false, 'timeout (25s)'), 25000);
 
-    client.once('clientReady', async () => {
+    client.once(Events.ClientReady, async () => {
       try {
         const invite = await client.fetchInvite(inviteCode).catch(() => null);
         if (!invite) return finish(false, 'invite invalid');
