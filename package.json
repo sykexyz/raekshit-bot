@@ -1,0 +1,19 @@
+{
+  "name": "raekshxt-bot",
+  "version": "1.0.0",
+  "description": "raekshxt-bot Discord bot & web dashboard",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "deploy": "node src/bot/deploy.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
