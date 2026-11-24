@@ -1,24 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>raekshxt-bot Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RAEKSHXT // BOT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>raekshxt-bot Dashboard</h1>
-      <p>Management & status control panel</p>
-    </header>
-    <main>
-      <div class="card">
-        <h2>System Status</h2>
-        <div id="status">Connecting...</div>
+  <div class="scanlines"></div>
+  <div class="grid-bg"></div>
+
+  <div id="login" class="login">
+    <div class="login-box">
+      <div class="glitch" data-text="RAEKSHXT">RAEKSHXT</div>
+      <div class="sub">// bot terminal</div>
+      <div class="auth-line">
+        <span class="prompt">&gt;</span>
+        <input id="apikey" type="password" placeholder="enter access key" autocomplete="off" />
+        <button id="loginbtn">UNLOCK</button>
       </div>
+      <p id="loginerr" class="err"></p>
+      <div class="footer-tag">v1.0 // secure</div>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <header>
+      <div class="brand">
+        <span class="logo">◆</span>
+        <span class="brand-name">RAEKSHXT<span class="accent">.BOT</span></span>
+      </div>
+      <div class="hdr-right">
+        <div class="stat-pill">
+          <span class="stat-label">TOKENS</span>
+          <span id="stat-tokens" class="stat-val">0</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">ACTIVE</span>
+          <span id="stat-active" class="stat-val accent">0</span>
+        </div>
+        <div class="status"><span id="dot"></span><span id="status">online</span></div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel" data-panel="tokens">
+        <div class="panel-head">
+          <h2><span class="num">01</span> token pool</h2>
+          <div class="panel-actions">
+            <button id="checktok" class="btn-mini">REVALIDATE</button>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="inp-wrap"><span class="inp-prefix">tok</span><input id="tok" placeholder="paste user token" /></div>
+          <div class="inp-wrap"><span class="inp-prefix">pxy</span><input id="proxy" placeholder="proxy (optional)" /></div>
+          <button id="addtok" class="btn-primary">+ ADD</button>
+        </div>
+        <div id="toklist" class="list"></div>
+      </section>
+
+      <section class="panel" data-panel="raid">
+        <div class="panel-head">
+          <h2><span class="num">02</span> launch raid</h2>
+        </div>
+        <div class="type-tabs" id="rtype">
+          <button data-type="join" class="tab active">JOIN</button>
+          <button data-type="leave" class="tab">LEAVE</button>
+          <button data-type="spam" class="tab">SPAM</button>
+          <button data-type="dm" class="tab">DM</button>
+          <button data-type="invite" class="tab">INVITE</button>
+          <button data-type="react" class="tab">REACT</button>
+          <button data-type="nick" class="tab">NICK</button>
+        </div>
+        <div id="params" class="params"></div>
+        <div class="input-row two">
+          <div class="inp-wrap"><span class="inp-prefix">cnt</span><input id="count" type="number" placeholder="all" min="1" /></div>
+          <div class="inp-wrap"><span class="inp-prefix">dly</span><input id="delay" type="number" placeholder="1000" value="1000" min="0" /></div>
+        </div>
+        <button id="startraid" class="btn-launch">▶ EXECUTE RAID</button>
+      </section>
+
+      <section class="panel wide" data-panel="active">
+        <div class="panel-head">
+          <h2><span class="num">03</span> active operations</h2>
+          <button id="stopall" class="btn-mini danger">■ KILL ALL</button>
+        </div>
+        <div id="active" class="list horizontal"></div>
+      </section>
+
+      <section class="panel wide" data-panel="logs">
+        <div class="panel-head">
+          <h2><span class="num">04</span> live stream</h2>
+          <div class="panel-actions">
+            <span class="pulse"></span>
+            <span class="mono dim" style="font-size:11px">streaming</span>
+          </div>
+        </div>
+        <div id="logs" class="logs"></div>
+      </section>
     </main>
   </div>
-  <script src="app.js"></script>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
