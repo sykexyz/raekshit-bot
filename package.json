@@ -1,19 +1,22 @@
 {
   "name": "raekshxt-bot",
   "version": "1.0.0",
-  "description": "raekshxt-bot Discord bot & web dashboard",
+  "description": "external discord raider — slash commands + web dashboard",
+  "type": "commonjs",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
     "deploy": "node src/bot/deploy.js"
   },
   "dependencies": {
+    "better-sqlite3": "^11.3.0",
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
-    "express": "^4.21.1"
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5",
+    "undici": "^6.19.8"
   },
-  "devDependencies": {
-    "nodemon": "^3.1.7"
+  "engines": {
+    "node": ">=20"
   }
 }
