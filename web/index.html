@@ -1,72 +1,146 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>RAEKSHXT // BOT</title>
+  <title>RAEKSHXT // LUXURY NOIR TERMINAL</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600&family=Pinyon+Script&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
 </head>
-<body>
-  <div class="scanlines"></div>
-  <div class="grid-bg"></div>
+<body class="fine">
+  <!-- Background Layers -->
+  <div class="bg-sheen"></div>
+  <div class="bg-grid"></div>
+  <canvas id="bg"></canvas>
 
-  <div id="login" class="login">
-    <div class="login-box">
-      <div class="glitch" data-text="RAEKSHXT">RAEKSHXT</div>
-      <div class="sub">// bot terminal</div>
-      <div class="auth-line">
-        <span class="prompt">&gt;</span>
-        <input id="apikey" type="password" placeholder="enter access key" autocomplete="off" />
-        <button id="loginbtn">UNLOCK</button>
+  <!-- Custom Cursor -->
+  <div id="cursor" class="custom-cursor">
+    <svg viewBox="0 0 24 24" class="cursor-star">
+      <path d="M12 0 L14 9 L23 12 L14 15 L12 24 L10 15 L1 12 L10 9 Z" fill="var(--fg)" />
+    </svg>
+  </div>
+  <div id="cursor-dot" class="custom-cursor-dot"></div>
+
+  <!-- SVG Gradient Definitions -->
+  <svg class="svg-defs" width="0" height="0" style="position:absolute;pointer-events:none;">
+    <defs>
+      <linearGradient id="silver-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="var(--s1)" />
+        <stop offset="30%" stop-color="var(--s2)" />
+        <stop offset="50%" stop-color="var(--s3)" />
+        <stop offset="70%" stop-color="var(--s2)" />
+        <stop offset="100%" stop-color="var(--s1)" />
+      </linearGradient>
+      <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#9a741e" />
+        <stop offset="40%" stop-color="#fdf4a6" />
+        <stop offset="70%" stop-color="#d4af37" />
+        <stop offset="100%" stop-color="#aa8328" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Login Gate Screen -->
+  <div id="login" class="login-wrapper">
+    <div class="glass login-card">
+      <div class="gold-badge">PRIVATE ACCESS</div>
+      <div class="brand-cursive silver-text">Raekshxt</div>
+      <div class="brand-sub">LUXURY NOIR TERMINAL // AUTOMATION</div>
+      
+      <div class="auth-box">
+        <div class="input-line">
+          <span class="prompt-icon">✦</span>
+          <input id="apikey" type="password" placeholder="enter access key" autocomplete="off" />
+          <button id="loginbtn" class="btn solid"><span class="btn-text">UNLOCK</span></button>
+        </div>
+        <p id="loginerr" class="err"></p>
       </div>
-      <p id="loginerr" class="err"></p>
-      <div class="footer-tag">v1.0 // secure</div>
+      
+      <div class="login-footer">
+        <span class="foot-item">HIGH FASHION EDITORIAL</span>
+        <span class="foot-sep">✦</span>
+        <span class="foot-item">V1.0 DISCREET</span>
+      </div>
     </div>
   </div>
 
-  <div id="app" class="app hidden">
-    <header>
-      <div class="brand">
-        <span class="logo">◆</span>
-        <span class="brand-name">RAEKSHXT<span class="accent">.BOT</span></span>
+  <!-- Main Dashboard App -->
+  <div id="app" class="app-layout hidden">
+    <!-- Floating Glass Navbar -->
+    <header class="glass nav-pill">
+      <div class="nav-left">
+        <span class="nav-brand-script silver-text">Raekshxt</span>
+        <span class="nav-tag">NOIR</span>
       </div>
-      <div class="hdr-right">
-        <div class="stat-pill">
-          <span class="stat-label">TOKENS</span>
-          <span id="stat-tokens" class="stat-val">0</span>
+
+      <div class="nav-center">
+        <div class="nav-stat-pill">
+          <span class="stat-lbl">TOKENS</span>
+          <span id="stat-tokens" class="stat-num">0</span>
         </div>
-        <div class="stat-pill">
-          <span class="stat-label">ACTIVE</span>
-          <span id="stat-active" class="stat-val accent">0</span>
+        <div class="nav-stat-pill">
+          <span class="stat-lbl">ACTIVE</span>
+          <span id="stat-active" class="stat-num gold-text">0</span>
         </div>
-        <div class="status"><span id="dot"></span><span id="status">online</span></div>
+      </div>
+
+      <div class="nav-right">
+        <div class="status-indicator">
+          <span id="dot" class="live-dot"></span>
+          <span id="status" class="status-text">OPERATIONAL</span>
+        </div>
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle visual mode">
+          <span class="theme-symbol">◐</span>
+        </button>
       </div>
     </header>
 
-    <main>
-      <section class="panel" data-panel="tokens">
-        <div class="panel-head">
-          <h2><span class="num">01</span> token pool</h2>
-          <div class="panel-actions">
-            <button id="checktok" class="btn-mini">REVALIDATE</button>
+    <!-- Marquee Ticker Ribbon -->
+    <div class="ticker-rail">
+      <div class="ticker-track">
+        <span>✦ RAEKSHXT NOIR ✦ EDITORIAL DISCORD ORCHESTRATION ✦ RESTRAINT & SUPREMACY ✦ PERSISTENT POWER ✦ RAEKSHXT NOIR ✦ EDITORIAL DISCORD ORCHESTRATION ✦ RESTRAINT & SUPREMACY ✦ PERSISTENT POWER ✦</span>
+      </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="dashboard-grid">
+      <!-- Panel 1: Token Pool -->
+      <section class="glass panel" data-panel="tokens">
+        <div class="panel-header">
+          <div class="title-meta">
+            <span class="sec-idx">01</span>
+            <h2 class="sec-heading">Token Sanctuary</h2>
           </div>
+          <button id="checktok" class="btn ghost mini-btn">REVALIDATE</button>
         </div>
-        <div class="input-row">
-          <div class="inp-wrap"><span class="inp-prefix">tok</span><input id="tok" placeholder="paste user token" /></div>
-          <div class="inp-wrap"><span class="inp-prefix">pxy</span><input id="proxy" placeholder="proxy (optional)" /></div>
-          <button id="addtok" class="btn-primary">+ ADD</button>
+        
+        <div class="input-deck">
+          <div class="inp-wrap">
+            <span class="inp-prefix">TOK</span>
+            <input id="tok" placeholder="Paste user authentication token" />
+          </div>
+          <div class="inp-wrap">
+            <span class="inp-prefix">PXY</span>
+            <input id="proxy" placeholder="Proxy url (optional)" />
+          </div>
+          <button id="addtok" class="btn solid add-btn">+ ADD TO POOL</button>
         </div>
-        <div id="toklist" class="list"></div>
+
+        <div id="toklist" class="token-collection"></div>
       </section>
 
-      <section class="panel" data-panel="raid">
-        <div class="panel-head">
-          <h2><span class="num">02</span> launch raid</h2>
+      <!-- Panel 2: Operation Engine -->
+      <section class="glass panel" data-panel="raid">
+        <div class="panel-header">
+          <div class="title-meta">
+            <span class="sec-idx">02</span>
+            <h2 class="sec-heading">Command Suite</h2>
+          </div>
         </div>
-        <div class="type-tabs" id="rtype">
+
+        <div class="type-ribbon" id="rtype">
           <button data-type="join" class="tab active">JOIN</button>
           <button data-type="leave" class="tab">LEAVE</button>
           <button data-type="spam" class="tab">SPAM</button>
@@ -75,33 +149,68 @@
           <button data-type="react" class="tab">REACT</button>
           <button data-type="nick" class="tab">NICK</button>
         </div>
-        <div id="params" class="params"></div>
-        <div class="input-row two">
-          <div class="inp-wrap"><span class="inp-prefix">cnt</span><input id="count" type="number" placeholder="all" min="1" /></div>
-          <div class="inp-wrap"><span class="inp-prefix">dly</span><input id="delay" type="number" placeholder="1000" value="1000" min="0" /></div>
-        </div>
-        <button id="startraid" class="btn-launch">▶ EXECUTE RAID</button>
-      </section>
 
-      <section class="panel wide" data-panel="active">
-        <div class="panel-head">
-          <h2><span class="num">03</span> active operations</h2>
-          <button id="stopall" class="btn-mini danger">■ KILL ALL</button>
-        </div>
-        <div id="active" class="list horizontal"></div>
-      </section>
+        <div id="params" class="params-deck"></div>
 
-      <section class="panel wide" data-panel="logs">
-        <div class="panel-head">
-          <h2><span class="num">04</span> live stream</h2>
-          <div class="panel-actions">
-            <span class="pulse"></span>
-            <span class="mono dim" style="font-size:11px">streaming</span>
+        <div class="meta-row">
+          <div class="inp-wrap">
+            <span class="inp-prefix">CNT</span>
+            <input id="count" type="number" placeholder="All tokens" min="1" />
+          </div>
+          <div class="inp-wrap">
+            <span class="inp-prefix">DLY</span>
+            <input id="delay" type="number" placeholder="1000 ms" value="1000" min="0" />
           </div>
         </div>
-        <div id="logs" class="logs"></div>
+
+        <button id="startraid" class="btn launch-btn">
+          <span class="shine-sweep"></span>
+          <span class="btn-core-text">▶ EXECUTE OPERATION</span>
+        </button>
+      </section>
+
+      <!-- Panel 3: Active Engagements -->
+      <section class="glass panel wide" data-panel="active">
+        <div class="panel-header">
+          <div class="title-meta">
+            <span class="sec-idx">03</span>
+            <h2 class="sec-heading">Active Engagements</h2>
+          </div>
+          <button id="stopall" class="btn ghost danger mini-btn">■ TERMINATE ALL</button>
+        </div>
+        <div id="active" class="active-task-list"></div>
+      </section>
+
+      <!-- Panel 4: Telemetry Stream -->
+      <section class="glass panel wide" data-panel="logs">
+        <div class="panel-header">
+          <div class="title-meta">
+            <span class="sec-idx">04</span>
+            <h2 class="sec-heading">Noir Telemetry Stream</h2>
+          </div>
+          <div class="live-tag">
+            <span class="pulse-ring"></span>
+            <span class="live-caption">ENCRYPTED FEED</span>
+          </div>
+        </div>
+        <div id="logs" class="noir-logs"></div>
       </section>
     </main>
+
+    <!-- Gold Carpet Accent Rail -->
+    <div class="gold-carpet">
+      <div class="carpet-inner">
+        <span>PREMIUM EDITORIAL INFRASTRUCTURE</span>
+        <span>✦</span>
+        <span>LATENCY OPTIMIZED</span>
+        <span>✦</span>
+        <span>DISCREET PROXY POOLING</span>
+        <span>✦</span>
+        <span>GATEWAY EMULATION</span>
+        <span>✦</span>
+        <span>NOISELESS PRESENCE</span>
+      </div>
+    </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
