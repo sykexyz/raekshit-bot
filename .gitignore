@@ -1,5 +1,5 @@
 node_modules/
+data/*.db
+data/*.db-*
 .env
-data/*
-!data/.gitkeep
-.DS_Store
+npm-debug.log*
